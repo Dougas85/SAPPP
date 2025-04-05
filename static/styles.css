@@ -5,7 +5,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* Alterado de height para min-height */
     margin: 0;
 }
 
@@ -24,8 +24,8 @@ header, footer {
     box-shadow: 0 0 10px;
     text-align: center;
     min-width: 300px;
-    max-width: 1200px;
-    height: 400px;
+    max-width: 100%; /* Alterado de 1200px para 100% */
+    height: auto; /* Deixe a altura ser dinâmica */
     overflow: auto;
 }
 
@@ -55,6 +55,8 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    overflow-x: auto;
+    display: block;
 }
 
 th, td {
@@ -62,7 +64,7 @@ th, td {
     max-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: normal;
+    white-space: nowrap; /* Previne quebra de linha */
     text-align: center;
 }
 
@@ -76,7 +78,7 @@ tr:hover {
 
 #calendar {
     display: grid;
-    grid-template-columns: repeat(23, 1fr); /* 67 itens divididos em 3 linhas ≈ 23 por linha */
+    grid-template-columns: repeat(23, 1fr);
     gap: 5px;
     width: 100%;
     max-width: 800px;
@@ -98,7 +100,6 @@ tr:hover {
     background-color: green;
     font-weight: bold;
 }
-
 
 /* Estilização do modal */
 dialog {
@@ -178,5 +179,45 @@ dialog::backdrop {
     100% {
         transform: scale(1);
         opacity: 1;
+    }
+}
+
+/* Estilos Responsivos */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    header, footer {
+        padding: 8px 0;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    button {
+        width: 100%; /* Botões ocupam toda a largura */
+        font-size: 18px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    #calendar {
+        grid-template-columns: repeat(4, 1fr); /* Reduz para 4 itens por linha em telas pequenas */
+    }
+
+    .search-container input {
+        width: 100%; /* Aumenta o campo de pesquisa para 100% */
+    }
+
+    dialog {
+        width: 90%; /* Aumenta a largura do modal em telas menores */
     }
 }
