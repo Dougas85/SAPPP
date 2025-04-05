@@ -186,11 +186,11 @@ dialog::backdrop {
     .container {
         padding: 15px;  /* Reduzido o padding em telas menores */
         width: 100%; /* Aumenta a largura da container para 100% */
-        max-width: 100%; /* Garante que ocupe toda a largura da tela */
+        max-width: 92%; /* Garante que ocupe toda a largura da tela */
     }
 
     button {
-        width: 100%; /* Botões ocupam toda a largura */
+        width: 90%; /* Botões ocupam toda a largura */
     }
 
     table {
