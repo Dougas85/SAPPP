@@ -69,7 +69,6 @@ Pympler==1.0.1
 PyPDF2==3.0.1
 pyphen==0.14.0
 pyrsistent==0.19.3
-PySimpleGUI==4.60.4
 PySocks==1.7.1
 python-dateutil==2.8.2
 python-dotenv
