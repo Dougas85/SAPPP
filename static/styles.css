@@ -5,7 +5,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Alterado de height para min-height */
+    height: 100vh;
     margin: 0;
 }
 
@@ -24,8 +24,8 @@ header, footer {
     box-shadow: 0 0 10px;
     text-align: center;
     min-width: 300px;
-    max-width: 100%; /* Alterado de 1200px para 100% */
-    height: auto; /* Deixe a altura ser dinâmica */
+    max-width: 1200px;
+    height: auto; /* Permite que a altura seja dinâmica */
     overflow: auto;
 }
 
@@ -55,8 +55,6 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    overflow-x: auto;
-    display: block;
 }
 
 th, td {
@@ -64,7 +62,7 @@ th, td {
     max-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap; /* Previne quebra de linha */
+    white-space: normal;
     text-align: center;
 }
 
@@ -78,7 +76,7 @@ tr:hover {
 
 #calendar {
     display: grid;
-    grid-template-columns: repeat(23, 1fr);
+    grid-template-columns: repeat(23, 1fr); /* 67 itens divididos em 3 linhas ≈ 23 por linha */
     gap: 5px;
     width: 100%;
     max-width: 800px;
@@ -100,6 +98,7 @@ tr:hover {
     background-color: green;
     font-weight: bold;
 }
+
 
 /* Estilização do modal */
 dialog {
@@ -182,42 +181,38 @@ dialog::backdrop {
     }
 }
 
-/* Estilos Responsivos */
+/* Ajustes para dispositivos móveis */
 @media (max-width: 768px) {
-    body {
-        padding: 10px;
-    }
-
-    header, footer {
-        padding: 8px 0;
-    }
-
     .container {
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 22px;
+        padding: 15px;  /* Reduzido o padding em telas menores */
+        width: 100%; /* Aumenta a largura da container para 100% */
+        max-width: 100%; /* Garante que ocupe toda a largura da tela */
     }
 
     button {
         width: 100%; /* Botões ocupam toda a largura */
-        font-size: 18px;
     }
 
     table {
-        font-size: 14px;
+        font-size: 14px; /* Reduzido o tamanho da fonte da tabela */
     }
 
     #calendar {
-        grid-template-columns: repeat(4, 1fr); /* Reduz para 4 itens por linha em telas pequenas */
+        grid-template-columns: repeat(6, 1fr); /* Ajusta para 6 itens por linha em telas menores */
     }
 
-    .search-container input {
-        width: 100%; /* Aumenta o campo de pesquisa para 100% */
+    #calendar div {
+        font-size: 12px;  /* Ajusta o tamanho da fonte para caber melhor em telas pequenas */
+        width: 25px;
+        height: 25px;
     }
 
     dialog {
-        width: 90%; /* Aumenta a largura do modal em telas menores */
+        width: 80%; /* Modal ocupa 80% da largura da tela */
+    }
+
+    /* Ajusta o tamanho da fonte no header e footer */
+    header h1, footer p {
+        font-size: 16px;
     }
 }
