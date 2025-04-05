@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: flask-app
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - fromDatabase:
+          name: DATABASE_URL
+          property: connectionString
+          databaseName: flask-db
+
+databases:
+  - name: flask-db
+    plan: free
