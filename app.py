@@ -13,6 +13,7 @@ load_dotenv(dotenv_path=".env.local")
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_db_connection():
+    print(f"[DEBUG] Conectando ao banco: {DATABASE_URL}")
     return psycopg2.connect(DATABASE_URL)
 
 app = Flask(__name__)
