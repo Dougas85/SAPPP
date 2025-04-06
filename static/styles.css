@@ -28,7 +28,22 @@ header, footer {
     height: auto; /* Permite que a altura seja dinâmica */
     overflow: auto;
 }
-
+.srolling-wrapper {
+    widht: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 40px;
+}
+.scrolling-text {
+    white-space: nowrap;
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    animation: scroll-left-pause 8s linear infinite;
+    position: absolute;
+}    
+    
 h1 {
     color: #333;
 }
@@ -181,6 +196,23 @@ dialog::backdrop {
     }
 }
 
+keyframes scroll-left-pause {
+    0% {
+        left: 100%;
+    }
+    40% {
+        left: 50%;
+        transform: translateX(-50%)
+    }
+    60%{
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    100% {
+        left:-100%;
+        transform: translateX(0%);
+    }
+}
 /* Ajustes para dispositivos móveis */
 @media (max-width: 768px) {
     .container {
