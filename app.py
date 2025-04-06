@@ -79,8 +79,8 @@ def save_daily_sorted_items(daily_sorted_items):
         json.dump(daily_sorted_items, f)
 
 def get_items_for_today():
-    #if not is_weekday():
-     #   return []
+    if not is_weekday():
+        return []
 
     today = datetime.date.today()
 
