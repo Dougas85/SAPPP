@@ -105,13 +105,20 @@ def get_items_for_today():
     all_ids = [str(row[0]) for row in rows]
     random.shuffle(all_ids)
 
-    selected_ids = all_ids[:3]
+    num_to_select = min(3, len(all_ids))  # pega 3 ou menos, dependendo do que tiver
+    selected_ids = all_ids[:num_to_select]
 
-    # Salva os itens no banco
+    item_1 = selected_ids[0] if len(selected_ids) > 0 else None
+    item_2 = selected_ids[1] if len(selected_ids) > 1 else None
+    item_3 = selected_ids[2] if len(selected_ids) > 2 else None
+
+     # Salva os itens no banco
+    
     cur.execute(
         "INSERT INTO daily_items (date, item_1, item_2, item_3) VALUES (%s, %s, %s, %s);",
-        (today, selected_ids[0], selected_ids[1], selected_ids[2])
+        (today, item_1, item_2, item_3)
     )
+
     conn.commit()
     cur.close()
     conn.close()
