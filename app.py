@@ -89,14 +89,14 @@ def get_items_for_today():
     cur = conn.cursor()
 
     # Verifica se já existem itens para hoje
-    cur.execute("SELECT item_1, item_2 FROM daily_items WHERE date = %s;", (today,))
+    cur.execute("SELECT item_1, item_2 FROM daily_items, item_3 WHERE date = %s;", (today,))
     row = cur.fetchone()
 
     rows = get_valid_csv_data()
 
     if row:
         # Já existem itens sorteados hoje, retorna os itens correspondentes
-        selected_ids = [row[0], row[1]]
+        selected_ids = [row[0], row[1], row[2]]
         result = [item for item in rows if str(item[0]) in selected_ids]
         conn.close()
         return result
@@ -105,12 +105,12 @@ def get_items_for_today():
     all_ids = [str(row[0]) for row in rows]
     random.shuffle(all_ids)
 
-    selected_ids = all_ids[:2]
+    selected_ids = all_ids[:3]
 
     # Salva os itens no banco
     cur.execute(
-        "INSERT INTO daily_items (date, item_1, item_2) VALUES (%s, %s, %s);",
-        (today, selected_ids[0], selected_ids[1])
+        "INSERT INTO daily_items (date, item_1, item_2, item_3) VALUES (%s, %s, %s, %s);",
+        (today, selected_ids[0], selected_ids[1], selected[2])
     )
     conn.commit()
     cur.close()
