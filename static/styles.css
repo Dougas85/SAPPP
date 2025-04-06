@@ -196,7 +196,7 @@ dialog::backdrop {
     }
 }
 
-keyframes scroll-left-pause {
+@keyframes scroll-left-pause {
     0% {
         left: 100%;
     }
