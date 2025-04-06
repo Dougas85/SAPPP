@@ -89,7 +89,7 @@ def get_items_for_today():
     cur = conn.cursor()
 
     # Verifica se já existem itens para hoje
-    cur.execute("SELECT item_1, item_2 FROM daily_items, item_3 WHERE date = %s;", (today,))
+    cur.execute("SELECT item_1, item_2, item_3 FROM daily_items WHERE date = %s;", (today,))
     row = cur.fetchone()
 
     rows = get_valid_csv_data()
@@ -110,7 +110,7 @@ def get_items_for_today():
     # Salva os itens no banco
     cur.execute(
         "INSERT INTO daily_items (date, item_1, item_2, item_3) VALUES (%s, %s, %s, %s);",
-        (today, selected_ids[0], selected_ids[1], selected[2])
+        (today, selected_ids[0], selected_ids[1], selected_ids[2])
     )
     conn.commit()
     cur.close()
