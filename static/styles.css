@@ -79,7 +79,6 @@ th, td {
     text-overflow: ellipsis;
     white-space: normal;
     text-align: center;
-    color: #000;
 }
 
 tr:nth-child(even) {
