@@ -33,11 +33,11 @@ header, footer {
     overflow: hidden;
     position: relative;
     height: 40px;
-    background-color: #0056b3;
 }
 
 .scrolling-text {
     white-space: nowrap;
+    display: inline-block;
     font-size: 24px;
     font-weight: bold;
     color: white;
