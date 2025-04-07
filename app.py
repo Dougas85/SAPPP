@@ -7,6 +7,7 @@ import os
 
 import psycopg2
 from dotenv import load_dotenv
+from zoneinfo import ZoneInfo  # <- Para lidar com fuso horário corretamente
 
 load_dotenv(dotenv_path=".env.local")
 
@@ -38,12 +39,15 @@ def get_valid_csv_data():
     return valid_rows
 
 def is_weekday():
-    """Verifica se hoje é um dia útil (segunda a sexta)."""
-    return datetime.datetime.today().weekday() < 5  # 0 = Segunda, 4 = Sexta
+    """Verifica se hoje é um dia útil (segunda a sexta) com timezone correto."""
+    now = datetime.datetime.now(ZoneInfo("America/Sao_Paulo"))
+    print(f"[DEBUG] Data atual com fuso horário: {now}")
+    print(f"[DEBUG] Dia da semana: {now.weekday()}")  # 0 = segunda, 6 = domingo
+    return now.weekday() < 5
 
 def get_business_day_count():
     """Conta quantos dias úteis já passaram no mês."""
-    today = datetime.datetime.today()
+    today = datetime.datetime.now(ZoneInfo("America/Sao_Paulo")).date()
     first_day = today.replace(day=1)
     
     business_days = [
@@ -79,10 +83,18 @@ def save_daily_sorted_items(daily_sorted_items):
         json.dump(daily_sorted_items, f)
 
 def get_items_for_today():
-    if not is_weekday():
+    weekday = datetime.datetime.today().weekday()
+    print(f"[DEBUG] Dia da semana: {weekday}")
+
+    if weekday >= 5:  # 5 = sábado, 6 = domingo
+        print("Hoje é sábado ou domingo, não haverá sorteio.")
         return []
 
-    today = datetime.date.today()
+    ...
+
+
+    today = datetime.datetime.now(ZoneInfo("America/Sao_Paulo")).date()
+    print(f"[DEBUG] Verificando itens para a data: {today}")
 
     # Conecta ao banco
     conn = get_db_connection()
@@ -105,15 +117,13 @@ def get_items_for_today():
     all_ids = [str(row[0]) for row in rows]
     random.shuffle(all_ids)
 
-    num_to_select = min(3, len(all_ids))  # pega 3 ou menos, dependendo do que tiver
+    num_to_select = min(3, len(all_ids))
     selected_ids = all_ids[:num_to_select]
 
     item_1 = selected_ids[0] if len(selected_ids) > 0 else None
     item_2 = selected_ids[1] if len(selected_ids) > 1 else None
     item_3 = selected_ids[2] if len(selected_ids) > 2 else None
 
-     # Salva os itens no banco
-    
     cur.execute(
         "INSERT INTO daily_items (date, item_1, item_2, item_3) VALUES (%s, %s, %s, %s);",
         (today, item_1, item_2, item_3)
@@ -124,7 +134,6 @@ def get_items_for_today():
     conn.close()
 
     return [item for item in rows if str(item[0]) in selected_ids]
-
 
 @app.route('/')
 def index():
@@ -142,7 +151,6 @@ def get_lines():
             "peso": item[2], 
             "orientacao": item[5] if len(item) > 5 else "Sem orientação",  
             "referencia": item[6] if len(item) > 6 else "Sem referência"
-           
         }
         for item in rows_to_show
     ]
@@ -154,7 +162,6 @@ def get_item_details(item_num):
     """Retorna os detalhes de um item específico sem sorteá-lo."""
     rows = get_valid_csv_data()
 
-    # Busca o item pelo número
     item = next((row for row in rows if row[0] == item_num), None)
 
     if item:
@@ -174,7 +181,6 @@ def search_items(search_query):
     """Retorna os itens que correspondem à pesquisa."""
     rows = get_valid_csv_data()
 
-    # Filtra os itens com base na pesquisa (ignora maiúsculas/minúsculas)
     filtered_items = [
         {
             "descricao": item[1],
@@ -192,9 +198,6 @@ def search_items(search_query):
 def test_csv():
     rows = get_valid_csv_data()
     return f"Total de linhas válidas: {len(rows)}"
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
