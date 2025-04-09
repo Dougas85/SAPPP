@@ -95,6 +95,12 @@ h1 {
     gap: 10px; /* Espaçamento entre os elementos */
 }
 
+.resultado strong {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
 /* Responsivo para telas pequenas */
 @media (max-width: 600px) {
     .container {
