@@ -66,6 +66,33 @@ button:hover {
     transform: scale(1.1);
 }
 
+#searchInput {
+    background-color: #003366; /* Azul escuro */
+    color: white;              /* Texto branco */
+    padding: 10px 20px;
+    width: 200px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 10px;
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
+#searchInput::placeholder {
+    color: #cccccc; /* Placeholder mais claro */
+}
+
+#searchInput:focus {
+    background-color: #ffcc00;  /* Amarelo no foco */
+    color: #003366;             /* Texto azul escuro */
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.7);
+    transform: scale(1.02);
+}
+
+
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -181,6 +208,17 @@ dialog::backdrop {
     animation: pulse 1s infinite;
 }
 
+.btn-simulador {
+    background-color: #004080;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+
 @keyframes pulse {
     0% {
         transform: scale(1);
@@ -248,3 +286,4 @@ dialog::backdrop {
         font-size: 16px;
     }
 }
+
