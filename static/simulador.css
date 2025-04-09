@@ -66,12 +66,19 @@ h1 {
     display: none;
 }
 
-.botoes input:checked + span {
+/* Classe adicionada via JavaScript */
+.botoes label.checked {
+    font-weight: bold;
+    background-color: #ffcc00; /* Cor amarela ao ser clicada */
+    color: #003366; /* Cor de texto */
+}
+
+/* .botoes input:checked + span {
     font-weight: bold;
     background-color: #ffcc00; /* Cor amarela ao ser clicada */
     color: #003366; /* Cor de texto */
     
-}
+
 
 .resultado {
     margin-top: 20px;
