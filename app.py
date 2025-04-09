@@ -149,8 +149,8 @@ def get_items_for_today():
 def index():
     global first_access_sent
     #if not first_access_sent:
-        send_whatsapp_message("⚠️ O sistema SAPPP foi acessado pela primeira vez.")
-        first_access_sent = True
+    send_whatsapp_message("⚠️ O sistema SAPPP foi acessado pela primeira vez.")
+    first_access_sent = True
     return render_template('index.html')
 
 @app.route('/get_lines')
