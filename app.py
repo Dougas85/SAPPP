@@ -11,37 +11,7 @@ from zoneinfo import ZoneInfo
 # from twilio.rest import Client
 
 load_dotenv(dotenv_path=".env.local")
-"""
-# Configurações do Twilio
-TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
-TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
-TWILIO_WHATSAPP_FROM = 'whatsapp:+14155238886'  # Número padrão do sandbox Twilio
-ADMIN_WHATSAPP_TO = os.getenv("ADMIN_WHATSAPP_TO")
 
-print(f"TWILIO_ACCOUNT_SID: {TWILIO_ACCOUNT_SID}")
-print(f"TWILIO_AUTH_TOKEN: {TWILIO_AUTH_TOKEN}")
-print(f"ADMIN_WHATSAPP_TO: {ADMIN_WHATSAPP_TO}")
-
-if not TWILIO_ACCOUNT_SID or not TWILIO_AUTH_TOKEN or not ADMIN_WHATSAPP_TO:
-    print("[ERRO] Credenciais Twilio não configuradas corretamente.")
-
-# Flag para detectar primeiro acesso
-first_access_sent = False
-first_sort_sent = False
-
-# Envio de mensagens WhatsApp
-def send_whatsapp_message(message):
-    try:
-        client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-        message = client.messages.create(
-            body=message,
-            from_=TWILIO_WHATSAPP_FROM,
-            to=ADMIN_WHATSAPP_TO
-        )
-        print(f"[DEBUG] Mensagem enviada com sucesso: SID {message.sid}")
-    except Exception as e:
-        print(f"[ERRO] Falha ao enviar WhatsApp: {e}")
-"""
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_db_connection():
@@ -50,7 +20,6 @@ def get_db_connection():
         return psycopg2.connect(DATABASE_URL)
     except Exception as e:
         print(f"[ERRO] Falha ao conectar no banco de dados: {e}")
-        # send_whatsapp_message("❌ ERRO CRÍTICO: Falha ao conectar no banco de dados SAPPP.")
         raise
 
 app = Flask(__name__)
@@ -75,7 +44,6 @@ def get_valid_csv_data():
         return valid_rows
     except Exception as e:
         print(f"[ERRO] Falha ao carregar CSV: {e}")
-         # send_whatsapp_message("📄 ERRO: Falha ao carregar o arquivo CSV do SAPPP.")
         return []
 
 def is_weekday():
@@ -128,7 +96,7 @@ def get_items_for_today():
         )
         data_formatada = today.strftime("%d/%m/%Y")
 
-         if not first_sort_sent:
+        if not first_sort_sent:
             ''' send_whatsapp_message(
                 f"""📅 Itens sorteados para o dia {data_formatada}:
 {mensagem_itens}"""
@@ -142,7 +110,6 @@ def get_items_for_today():
 
     except Exception as e:
         print(f"[ERRO] Falha ao sortear itens do dia: {e}")
-        # send_whatsapp_message("⚠️ ERRO: Falha ao sortear os itens do dia no SAPPP.")
         return []
 
 @app.route('/')
@@ -227,5 +194,3 @@ def test_csv():
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
-
-
