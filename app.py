@@ -18,6 +18,13 @@ TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
 TWILIO_WHATSAPP_FROM = 'whatsapp:+14155238886'  # Número padrão do sandbox Twilio
 ADMIN_WHATSAPP_TO = os.getenv("ADMIN_WHATSAPP_TO")
 
+print(f"TWILIO_ACCOUNT_SID: {TWILIO_ACCOUNT_SID}")
+print(f"TWILIO_AUTH_TOKEN: {TWILIO_AUTH_TOKEN}")
+print(f"ADMIN_WHATSAPP_TO: {ADMIN_WHATSAPP_TO}")
+
+if not TWILIO_ACCOUNT_SID or not TWILIO_AUTH_TOKEN or not ADMIN_WHATSAPP_TO:
+    print("[ERRO] Credenciais Twilio não configuradas corretamente.")
+
 # Flag para detectar primeiro acesso
 first_access_sent = False
 first_sort_sent = False
