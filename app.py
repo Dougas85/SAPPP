@@ -50,7 +50,7 @@ def get_db_connection():
         return psycopg2.connect(DATABASE_URL)
     except Exception as e:
         print(f"[ERRO] Falha ao conectar no banco de dados: {e}")
-        send_whatsapp_message("❌ ERRO CRÍTICO: Falha ao conectar no banco de dados SAPPP.")
+        # send_whatsapp_message("❌ ERRO CRÍTICO: Falha ao conectar no banco de dados SAPPP.")
         raise
 
 app = Flask(__name__)
@@ -75,7 +75,7 @@ def get_valid_csv_data():
         return valid_rows
     except Exception as e:
         print(f"[ERRO] Falha ao carregar CSV: {e}")
-        send_whatsapp_message("📄 ERRO: Falha ao carregar o arquivo CSV do SAPPP.")
+         # send_whatsapp_message("📄 ERRO: Falha ao carregar o arquivo CSV do SAPPP.")
         return []
 
 def is_weekday():
@@ -128,12 +128,12 @@ def get_items_for_today():
         )
         data_formatada = today.strftime("%d/%m/%Y")
 
-        if not first_sort_sent:
-            send_whatsapp_message(
+         if not first_sort_sent:
+            ''' send_whatsapp_message(
                 f"""📅 Itens sorteados para o dia {data_formatada}:
 {mensagem_itens}"""
             )
-            first_sort_sent = True
+            first_sort_sent = True '''
 
         cur.close()
         conn.close()
@@ -142,14 +142,14 @@ def get_items_for_today():
 
     except Exception as e:
         print(f"[ERRO] Falha ao sortear itens do dia: {e}")
-        send_whatsapp_message("⚠️ ERRO: Falha ao sortear os itens do dia no SAPPP.")
+        # send_whatsapp_message("⚠️ ERRO: Falha ao sortear os itens do dia no SAPPP.")
         return []
 
 @app.route('/')
 def index():
     global first_access_sent
     #if not first_access_sent:
-    send_whatsapp_message("⚠️ O sistema SAPPP foi acessado pela primeira vez.")
+    #send_whatsapp_message("⚠️ O sistema SAPPP foi acessado pela primeira vez.")
     first_access_sent = True
     return render_template('index.html')
 
