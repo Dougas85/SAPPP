@@ -66,7 +66,7 @@ h1 {
     display: none;
 }
 
-.botoes input:checked + label {
+.botoes input:checked + span {
     font-weight: bold;
     background-color: #ffcc00; /* Cor amarela ao ser clicada */
     color: #003366; /* Cor de texto */
