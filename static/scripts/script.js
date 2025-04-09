@@ -113,78 +113,80 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error("Erro ao buscar os itens:", error));
     });
 
-    // Função auxiliar para abrir o modal com fala
-    function openModal(numero, descricao, orientacao, referencia, peso) {
-        document.getElementById('modalItem').innerText = `Item ${numero}`;
-        document.getElementById('modalOrientation').innerText = orientacao || "Sem orientação";
-        document.getElementById('modalReference').innerText = referencia || "Sem referência";
-        document.getElementById('modalDescription').innerText = descricao || "Sem informação";
-        document.getElementById('modalWeight').innerText = peso || "Sem peso";
+    // Função auxiliar para abrir o modal sem iniciar a fala automaticamente
+function openModal(numero, descricao, orientacao, referencia, peso) {
+    document.getElementById('modalItem').innerText = `Item ${numero}`;
+    document.getElementById('modalOrientation').innerText = orientacao || "Sem orientação";
+    document.getElementById('modalReference').innerText = referencia || "Sem referência";
+    document.getElementById('modalDescription').innerText = descricao || "Sem informação";
+    document.getElementById('modalWeight').innerText = peso || "Sem peso";
 
-        document.getElementById('dialogBox').showModal();
+    document.getElementById('dialogBox').showModal();
 
-        const textoParaFalar = `Descrição: ${descricao || "Sem informação"}. Orientação: ${orientacao || "Sem orientação"}. Referência: ${referencia || "Sem referência"}.`;
+    // Armazena o texto para falar no botão "Iniciar Fala"
+    const textoParaFalar = `Descrição: ${descricao || "Sem informação"}. Orientação: ${orientacao || "Sem orientação"}. Referência: ${referencia || "Sem referência"}.`;
+    document.getElementById('startSpeechButton').onclick = function() {
         speakText(textoParaFalar);
+    };
+}
+
+function showItemDetails(itemNum) {
+    fetch(`/get_item_details/${itemNum}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert("Item não encontrado!");
+            } else {
+                openModal(data.numero, data.descricao, data.orientacao, data.referencia, data.peso);
+            }
+        })
+        .catch(error => console.error("Erro ao buscar detalhes:", error));
+}
+
+// VOZES
+window.speechSynthesis.onvoiceschanged = function () {
+    const voices = window.speechSynthesis.getVoices();
+    voices.forEach(voice => {
+        console.log(voice.name, voice.lang);
+    });
+};
+
+function speakText(text) {
+    const cleanedText = text.replace(/([:;.,])/g, '$1 ');
+
+    // Pega todas as vozes disponíveis
+    const voices = window.speechSynthesis.getVoices();
+
+    // Tenta encontrar uma voz jovem e natural em português do Brasil
+    const selectedVoice = voices.find(voice =>
+        voice.lang === 'pt-BR' &&
+        (
+            voice.name.includes('Google') || // Google voz natural
+            voice.name.includes('Luciana') || // Voz mais jovem/feminina em alguns sistemas
+            voice.name.includes('Daniel') ||  // Alternativa mais neutra
+            voice.name.includes('Microsoft')  // Voz da Microsoft (em alguns Windows)
+        )
+    ) || voices.find(voice => voice.lang === 'pt-BR'); // Fallback para qualquer pt-BR
+
+    const utterance = new SpeechSynthesisUtterance(cleanedText);
+    utterance.voice = selectedVoice;
+    utterance.rate = 0.9;
+    utterance.lang = 'pt-BR';
+
+    // Animação de fala
+    const animation = document.getElementById("speechAnimation");
+    if (animation) {
+        animation.style.display = "block";
     }
 
-    function showItemDetails(itemNum) {
-        fetch(`/get_item_details/${itemNum}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    alert("Item não encontrado!");
-                } else {
-                    openModal(data.numero, data.descricao, data.orientacao, data.referencia, data.peso);
-                }
-            })
-            .catch(error => console.error("Erro ao buscar detalhes:", error));
-    }
-
-    // VOZES
-    window.speechSynthesis.onvoiceschanged = function () {
-        const voices = window.speechSynthesis.getVoices();
-        voices.forEach(voice => {
-            console.log(voice.name, voice.lang);
-        });
+    utterance.onend = () => {
+        if (animation) {
+            animation.style.display = "none";
+        }
     };
 
-    function speakText(text) {
-        const cleanedText = text.replace(/([:;.,])/g, '$1 ');
-    
-        // Pega todas as vozes disponíveis
-        const voices = window.speechSynthesis.getVoices();
-    
-        // Tenta encontrar uma voz jovem e natural em português do Brasil
-        const selectedVoice = voices.find(voice =>
-            voice.lang === 'pt-BR' &&
-            (
-                voice.name.includes('Google') || // Google voz natural
-                voice.name.includes('Luciana') || // Voz mais jovem/feminina em alguns sistemas
-                voice.name.includes('Daniel') ||  // Alternativa mais neutra
-                voice.name.includes('Microsoft')  // Voz da Microsoft (em alguns Windows)
-            )
-        ) || voices.find(voice => voice.lang === 'pt-BR'); // Fallback para qualquer pt-BR
-    
-        const utterance = new SpeechSynthesisUtterance(cleanedText);
-        utterance.voice = selectedVoice;
-        utterance.rate = 0.9;
-        utterance.lang = 'pt-BR';
-    
-        // Animação de fala
-        const animation = document.getElementById("speechAnimation");
-        if (animation) {
-            animation.style.display = "block";
-        }
-    
-        utterance.onend = () => {
-            if (animation) {
-                animation.style.display = "none";
-            }
-        };
-    
-        window.speechSynthesis.speak(utterance);
-    }
-
+    window.speechSynthesis.speak(utterance);
+}
 
 // Evento para botão "Parar Fala"
 document.getElementById("stopSpeechButton").addEventListener("click", function(event) {
@@ -193,8 +195,6 @@ document.getElementById("stopSpeechButton").addEventListener("click", function(e
     const animation = document.getElementById("speechAnimation");
     if (animation) animation.style.display = "none";
 });
-
-});
-
+    
 
         
