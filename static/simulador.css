@@ -89,6 +89,12 @@ h1 {
     display: block;
 }
 
+.resultado div {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Espaçamento entre os elementos */
+}
+
 /* Responsivo para telas pequenas */
 @media (max-width: 600px) {
     .container {
