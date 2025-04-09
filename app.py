@@ -8,10 +8,10 @@ import os
 import psycopg2
 from dotenv import load_dotenv
 from zoneinfo import ZoneInfo
-from twilio.rest import Client
+# from twilio.rest import Client
 
 load_dotenv(dotenv_path=".env.local")
-
+"""
 # Configurações do Twilio
 TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
@@ -41,7 +41,7 @@ def send_whatsapp_message(message):
         print(f"[DEBUG] Mensagem enviada com sucesso: SID {message.sid}")
     except Exception as e:
         print(f"[ERRO] Falha ao enviar WhatsApp: {e}")
-
+"""
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_db_connection():
