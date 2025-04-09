@@ -64,7 +64,6 @@
 
                 input.addEventListener('change', function() {
                     calcularResultado();
-                    document.querySelectorAll('.botoes label').forEach(lbl => lbl.classList.remove('checked'));
                     if (input.checked) {
                         labelBotao.classList.add('checked');
                     }
