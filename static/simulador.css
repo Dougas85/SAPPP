@@ -68,7 +68,9 @@ h1 {
 
 .botoes input:checked + span {
     font-weight: bold;
-    text-decoration: underline;
+    background-color: #ffcc00; /* Cor amarela ao ser clicada */
+    color: #003366; /* Cor de texto */
+    
 }
 
 .resultado {
@@ -92,12 +94,12 @@ h1 {
 
     .botoes {
         flex-direction: column;
-        align-items: stretch;
+        align-items: center;  /* Alinha os boões ao centro */
     }
 
     .botoes label {
         justify-content: center;
-        width: 100%;
+        width: 80%; /* Ajusta a largura conforme necessário */
     }
 
     .resultado {
