@@ -67,7 +67,7 @@ button:hover {
 }
 
 #searchInput {
-    background-color: #003366; /* Azul escuro */
+    background-color: #ccdbeb; /* Azul escuro */
     color: white;              /* Texto branco */
     padding: 10px 20px;
     width: 200px;
@@ -81,7 +81,7 @@ button:hover {
 }
 
 #searchInput::placeholder {
-    color: #cccccc; /* Placeholder mais claro */
+    color: #141313; /* Placeholder mais claro */
 }
 
 #searchInput:focus {
