@@ -64,11 +64,14 @@
 
                 input.addEventListener('change', function() {
                     calcularResultado();
+                    document.querySelectorAll(`input[name="item_${item.numero}"]`).forEach(inp => {
+                        const lbl = document.querySelector(`label[for="${inp.id}"]`);
+                        lbl.classList.remove('checked');
+                    });
                     if (input.checked) {
                         labelBotao.classList.add('checked');
                     }
                 });
-
 
                 botoes.appendChild(labelBotao);
             });
