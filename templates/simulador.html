@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulador de Checklist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='simulador.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Simulador de Resultado da Lista de Verificação</h1>
+        <div id="itens-container"></div>
+
+        <div class="resultado">
+            <strong>Resultado: <span id="resultado">0%</span></strong>
+        </div>
+    </div>
+
+    <script>
+        let totalPeso = 0;
+
+        function calcularResultado() {
+            const botoesSelecionados = document.querySelectorAll('.botoes input:checked');
+            let pontosObtidos = 0;
+            let pesoNA = 0;
+
+            botoesSelecionados.forEach(input => {
+                const peso = parseInt(input.dataset.peso);
+                const tipo = input.value;
+                if (tipo === "S") pontosObtidos += peso;
+                else if (tipo === "NA") pesoNA += peso;
+            });
+
+            const denominador = totalPeso - pesoNA;
+            const resultado = denominador > 0 ? (pontosObtidos / denominador) * 100 : 0;
+            document.getElementById('resultado').textContent = resultado.toFixed(2) + "%";
+        }
+
+        function criarItem(item) {
+            const div = document.createElement('div');
+            div.classList.add('item');
+
+            const label = document.createElement('label');
+            label.innerText = `${item.numero} - ${item.descricao} (Peso: ${item.peso})`;
+
+            const botoes = document.createElement('div');
+            botoes.classList.add('botoes');
+
+            ['S', 'N', 'NA'].forEach(valor => {
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `item_${item.numero}`;
+                input.value = valor;
+                input.dataset.peso = item.peso;
+                input.id = `item_${item.numero}_${valor}`;
+
+                const span = document.createElement('span');
+                span.innerText = valor;
+
+                const labelBotao = document.createElement('label');
+                labelBotao.setAttribute('for', input.id);
+                labelBotao.appendChild(input);
+                labelBotao.appendChild(span);
+
+                input.addEventListener('change', calcularResultado);
+
+                botoes.appendChild(labelBotao);
+            });
+
+            div.appendChild(label);
+            div.appendChild(botoes);
+
+            document.getElementById('itens-container').appendChild(div);
+        }
+
+        fetch('/get_all_items')
+            .then(res => res.json())
+            .then(data => {
+                totalPeso = data.reduce((acc, item) => acc + item.peso, 0);
+                data.forEach(item => criarItem(item));
+            });
+    </script>
+</body>
+</html>
