@@ -134,6 +134,7 @@ tr:hover {
     line-height: 30px;
     font-size: 14px;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 #calendar div.viewed {
