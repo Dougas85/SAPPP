@@ -13,6 +13,10 @@
 
         <div class="resultado">
             <strong>Resultado: <span id="resultado">0%</span></strong>
+            <div>
+                <span id="count-s">S = 0</span>
+                <span id="count-n">N = 0</span>
+                <span id="count-na">NA = 0</span>          
         </div>
     </div>
 
@@ -23,17 +27,30 @@
             const botoesSelecionados = document.querySelectorAll('.botoes input:checked');
             let pontosObtidos = 0;
             let pesoNA = 0;
+            let countS = 0;
+            let countN = 0;
+            let countNA = 0;
 
             botoesSelecionados.forEach(input => {
                 const peso = parseInt(input.dataset.peso);
                 const tipo = input.value;
-                if (tipo === "S") pontosObtidos += peso;
-                else if (tipo === "NA") pesoNA += peso;
-            });
+                if (tipo === "S") {
+                    pontosObtidos += peso;
+                    countS++;
+            } else if (tipo === "N") {
+                countN++;
+            } else if (tipo === "NA") {
+                pesoNA += peso;
+                countNA++;
+            }
+        });
 
             const denominador = totalPeso - pesoNA;
             const resultado = denominador > 0 ? (pontosObtidos / denominador) * 100 : 0;
             document.getElementById('resultado').textContent = resultado.toFixed(2) + "%";
+            document.getElementById('count-s').textContent = `S = ${countS}`;
+            document.getElementById('count-n').textContent = `N = ${countN}`;
+            document.getElementById('count-na').textContent = `NA = ${countNA}`;
         }
 
         function criarItem(item) {
