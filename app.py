@@ -203,6 +203,7 @@ def get_all_items():
             "descricao": item[1],
             "numero": item[0],
             "peso": int(item[2]) if item[2].isdigit() else 0
+            "na": item[4] 
         }
         for item in rows
     ]
