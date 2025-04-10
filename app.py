@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 import csv
 import datetime
 import random
@@ -13,6 +13,15 @@ from zoneinfo import ZoneInfo
 load_dotenv(dotenv_path=".env.local")
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+
+app = Flask(__name__)
+app.secret_key = 'chave-super-secreta'  # Necessário para usar sessões
+
+# Matrículas autorizadas
+MATRICULAS_AUTORIZADAS = {'81111045', '81143494'}
+
+first_access_sent = False
+first_sort_sent = False
 
 def get_db_connection():
     try:
@@ -112,13 +121,27 @@ def get_items_for_today():
         print(f"[ERRO] Falha ao sortear itens do dia: {e}")
         return []
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        matricula = request.form.get['matricula']
+        session['matricula'] = matricula
+        session['acesso_completo'] = matricula in MATRICULAS_AUTORIZADAS
+        return redirect(url_for('index'))
+    return render_template('login.html')
+
 @app.route('/')
 def index():
-    global first_access_sent
-    #if not first_access_sent:
-    #send_whatsapp_message("⚠️ O sistema SAPPP foi acessado pela primeira vez.")
-    first_access_sent = True
-    return render_template('index.html')
+    if 'matricula' not in session:
+        return redirect(url_for('login'))
+    return render_template('index.html', acesso_completo=session.get('acesso_completo', False))
+    
+    if not first_access_sent:
+        # send_whatsapp_message("\u26a0\ufe0f O sistema SAPPP foi acessado pela primeira vez.")
+        first_access_sent = True
+
+    acesso_completo = session.get('acesso_completo', False)
+    return render_template('index.html', acesso_completo=acesso_completo)  
 
 @app.route('/get_lines')
 def get_lines():
