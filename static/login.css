@@ -72,7 +72,7 @@ body {
 }
 
 /* Adicionando responsividade */
-@media (max-width: 600px) {
+@media (max-width: 800px) {
     .login-container {
         padding: 20px;
         width: 100%;
