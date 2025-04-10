@@ -51,11 +51,6 @@ body {
     background-color: #ffd700;
 }
 
-/* Responsividade para telas menores */
-@media (max-width: 480px) {
-    .login-container {
-        padding: 20px;
-        border-radius: 12px;
-    }
+
 
     
