@@ -16,7 +16,9 @@
     <div class="container">
         <div class="button-container">
             <button id="showLinesButton">Mostrar Itens do Dia</button>
-            <a href="/simulador" class="btn-simulador">Simulador</a>
+        {% if acesso_completo%}
+        <a href="/simulador" class="btn-simulador">Simulador</a>
+        {% endif %}
         </div>
     
         <div id="linesContainer"></div>
