@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - SAPPP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <h2 class="login-title">Informe sua matrícula</h2>
+        <form method="POST">
+            <input type="text" name="matricula" required placeholder="Matrícula" class="login-input">
+            <button type="submit" class="login-button">Entrar</button>
+        </form>
+    </div>
+</body>
+</html>
