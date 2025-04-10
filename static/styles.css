@@ -7,6 +7,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    width: 100vw; /* Ocupa toda a largura da tela */
 }
 
 header, footer {
@@ -25,9 +26,11 @@ header, footer {
     text-align: center;
     min-width: 300px;
     max-width: 1200px;
-    height: auto; /* Permite que a altura seja dinâmica */
+    height: 100%; /* Ocupa toda a altura disponível */
     overflow: auto;
+    width: 100%; /* Ocupa toda a largura disponível */
 }
+
 .scrolling-wrapper {
     width: 100%;
     overflow: hidden;
@@ -44,11 +47,12 @@ header, footer {
     position: absolute;
     animation: scroll-left-pause 10s linear infinite;
 }
+
 h1 {
     color: #333;
 }
 
-button {
+button, .btn-simulador, #searchInput {
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -57,11 +61,11 @@ button {
     cursor: pointer;
     font-size: 16px;
     margin: 10px;
-    width: 200px;
+    width: 200px; /* Tamanho padrão */
     transition: transform 0.3s, background-color 0.3s;
 }
 
-button:hover {
+button:hover, .btn-simulador:hover, #searchInput:hover {
     background-color: #ffcc00;
     transform: scale(1.1);
 }
@@ -69,12 +73,6 @@ button:hover {
 #searchInput {
     background-color: #ccdbeb; /* Azul escuro */
     color: white;              /* Texto branco */
-    padding: 10px 20px;
-    width: 200px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    margin: 10px;
     transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     outline: none;
@@ -90,8 +88,6 @@ button:hover {
     box-shadow: 0 0 8px rgba(255, 204, 0, 0.7);
     transform: scale(1.02);
 }
-
-
 
 table {
     width: 100%;
@@ -141,7 +137,6 @@ tr:hover {
     background-color: green;
     font-weight: bold;
 }
-
 
 /* Estilização do modal */
 dialog {
@@ -217,8 +212,8 @@ dialog::backdrop {
     text-decoration: none;
     margin-top: 10px;
     display: inline-block;
+    width: 200px; /* Tamanho padrão */
 }
-
 
 @keyframes pulse {
     0% {
@@ -241,9 +236,9 @@ dialog::backdrop {
     }
     40% {
         left: 50%;
-        transform: translateX(-50%)
+        transform: translateX(-50%);
     }
-    60%{
+    60% {
         left: 50%;
         transform: translateX(-50%);
     }
@@ -252,6 +247,7 @@ dialog::backdrop {
         transform: translateX(0%);
     }
 }
+
 /* Ajustes para dispositivos móveis */
 @media (max-width: 768px) {
     .container {
@@ -287,4 +283,3 @@ dialog::backdrop {
         font-size: 16px;
     }
 }
-
