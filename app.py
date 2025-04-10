@@ -31,8 +31,6 @@ def get_db_connection():
         print(f"[ERRO] Falha ao conectar no banco de dados: {e}")
         raise
 
-app = Flask(__name__)
-
 SORTED_ITEMS_FILE = "sorted_items.json"
 DAILY_SORT_FILE = "daily_sorted.json"
 
