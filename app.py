@@ -124,7 +124,7 @@ def get_items_for_today():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        matricula = request.form.get['matricula']
+        matricula = request.form.get('matricula')
         session['matricula'] = matricula
         session['acesso_completo'] = matricula in MATRICULAS_AUTORIZADAS
         return redirect(url_for('index'))
