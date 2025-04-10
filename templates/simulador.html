@@ -110,6 +110,12 @@ function criarItem(item) {
         labelBotaoNA.appendChild(inputNA);
         labelBotaoNA.appendChild(spanNA);
 
+        // Se não tiver NA permitido, desativa e oculta visualmente
+        if (item.na !== "S") {
+            labelBotaoNA.style.visibility = 'hidden';
+            labelBotaoNA.style.pointerEvents = 'none';
+        }
+
         inputNA.addEventListener('change', function() {
             calcularResultado();
             document.querySelectorAll(`input[name="item_${item.numero}"]`).forEach(inp => {
