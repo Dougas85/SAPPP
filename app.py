@@ -18,7 +18,7 @@ app = Flask(__name__)
 app.secret_key = 'chave-super-secreta'  # Necessário para usar sessões
 
 # Matrículas autorizadas
-MATRICULAS_AUTORIZADAS = {'81111045', '81143494'}
+MATRICULAS_AUTORIZADAS = {'81111045', '81143494', '88942872', '89090489', '89114051', '86518496'}
 
 first_access_sent = False
 first_sort_sent = False
