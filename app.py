@@ -18,7 +18,7 @@ app = Flask(__name__)
 app.secret_key = 'chave-super-secreta'  # Necessário para usar sessões
 
 # Matrículas autorizadas
-MATRICULAS_AUTORIZADAS = {'81111045', '81143494', '88942872', '89090489', '89114051', '86518496'}
+MATRICULAS_AUTORIZADAS = {'81111045', '81143494', '88942872', '89090489', '89114051', '86518496', '89166078'}
 
 first_access_sent = False
 first_sort_sent = False
@@ -202,7 +202,7 @@ def get_all_items():
         {
             "descricao": item[1],
             "numero": item[0],
-            "peso": int(item[2]) if item[2].isdigit() else 0
+            "peso": int(item[2]) if item[2].isdigit() else 0,
             "na": item[4] 
         }
         for item in rows
