@@ -40,9 +40,10 @@ h1 {
 }
 
 .botoes {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Três colunas fixas */
+    gap: 10px;
+    justify-items: center; /* Centrliza os botões horizontalmente */
 }
 
 .botoes label {
@@ -52,7 +53,7 @@ h1 {
     color: white;
     border-radius: 5px;
     padding: 8px 12px;
-    margin: 5px;
+    
     cursor: pointer;
     transition: background-color 0.3s;
 }
