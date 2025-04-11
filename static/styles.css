@@ -140,6 +140,11 @@ tr:hover {
     background-color: #add8e6; /* Azul claro */
 }
 
+#calendar div.peso-5 {
+    font-weight: bold;
+    color: #ff6666; /* vermelho suave */
+}
+
 #calendar div.viewed {
     background-color: green;
     font-weight: bold;
