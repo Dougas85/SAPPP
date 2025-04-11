@@ -8,16 +8,14 @@ import os
 import psycopg2
 from dotenv import load_dotenv
 from zoneinfo import ZoneInfo
-# from twilio.rest import Client
 
 load_dotenv(dotenv_path=".env.local")
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 app = Flask(__name__)
-app.secret_key = 'chave-super-secreta'  # Necessário para usar sessões
+app.secret_key = 'chave-super-secreta'
 
-# Matrículas autorizadas
 MATRICULAS_AUTORIZADAS = {'81111045', '81143494', '88942872', '89090489', '89114051', '86518496', '89166078'}
 
 first_access_sent = False
@@ -25,14 +23,10 @@ first_sort_sent = False
 
 def get_db_connection():
     try:
-        print(f"[DEBUG] Conectando ao banco: {DATABASE_URL}")
         return psycopg2.connect(DATABASE_URL)
     except Exception as e:
         print(f"[ERRO] Falha ao conectar no banco de dados: {e}")
         raise
-
-SORTED_ITEMS_FILE = "sorted_items.json"
-DAILY_SORT_FILE = "daily_sorted.json"
 
 def get_valid_csv_data():
     try:
@@ -41,10 +35,10 @@ def get_valid_csv_data():
             rows = list(reader)
 
         valid_rows = []
-        numbering = 1  
+        numbering = 1
 
         for row in rows:
-            if row and row[0].isdigit():  
+            if row and row[0].isdigit():
                 valid_rows.append([numbering] + row[1:])
                 numbering += 1
 
@@ -60,59 +54,67 @@ def is_weekday():
 def get_items_for_today():
     global first_sort_sent
 
-    weekday = datetime.datetime.today().weekday()
-    if weekday >= 5:
+    today = datetime.datetime.now(ZoneInfo("America/Sao_Paulo")).date()
+    if today.weekday() >= 5:
         print("Hoje é sábado ou domingo, não haverá sorteio.")
         return []
-
-    today = datetime.datetime.now(ZoneInfo("America/Sao_Paulo")).date()
-    print(f"[DEBUG] Verificando itens para a data: {today}")
 
     try:
         conn = get_db_connection()
         cur = conn.cursor()
 
+        # Verifica se já há sorteio para hoje
         cur.execute("SELECT item_1, item_2, item_3 FROM daily_items WHERE date = %s;", (today,))
         row = cur.fetchone()
         rows = get_valid_csv_data()
 
         if row:
-            selected_ids = [row[0], row[1], row[2]]
+            selected_ids = [id for id in row if id is not None]
             result = [item for item in rows if str(item[0]) in selected_ids]
             conn.close()
             return result
 
+        # Lista todos os IDs disponíveis
         all_ids = [str(row[0]) for row in rows]
-        random.shuffle(all_ids)
 
-        selected_ids = all_ids[:min(3, len(all_ids))]
+        # Busca os IDs já utilizados
+        cur.execute("SELECT item_id FROM used_items;")
+        used_ids = {str(row[0]) for row in cur.fetchall()}
+
+        available_ids = [i for i in all_ids if i not in used_ids]
+        random.shuffle(available_ids)
+
+        # Se não houver itens suficientes, reinicia o ciclo
+        if len(available_ids) == 0:
+            print("[INFO] Reiniciando ciclo de sorteio.")
+            cur.execute("DELETE FROM used_items;")
+            conn.commit()
+            available_ids = all_ids.copy()
+            used_ids.clear()
+            random.shuffle(available_ids)
+
+        # Sorteia até 3, mas respeita o restante do ciclo
+        selected_ids = available_ids[:min(3, len(available_ids))]
+
         item_1 = selected_ids[0] if len(selected_ids) > 0 else None
         item_2 = selected_ids[1] if len(selected_ids) > 1 else None
         item_3 = selected_ids[2] if len(selected_ids) > 2 else None
 
+        # Salva sorteio do dia
         cur.execute(
             "INSERT INTO daily_items (date, item_1, item_2, item_3) VALUES (%s, %s, %s, %s);",
             (today, item_1, item_2, item_3)
         )
 
+        # Salva os itens usados
+        for item_id in selected_ids:
+            cur.execute("INSERT INTO used_items (item_id, used_on) VALUES (%s, %s);", (item_id, today))
+
         conn.commit()
 
         selected_items = [item for item in rows if str(item[0]) in selected_ids]
-        mensagem_itens = "\n".join(
-            [f"{item[0]} - {item[1]}" for item in selected_items]
-        )
-        data_formatada = today.strftime("%d/%m/%Y")
-
-        if not first_sort_sent:
-            ''' send_whatsapp_message(
-                f"""📅 Itens sorteados para o dia {data_formatada}:
-{mensagem_itens}"""
-            )
-            first_sort_sent = True '''
-
         cur.close()
         conn.close()
-
         return selected_items
 
     except Exception as e:
@@ -133,13 +135,6 @@ def index():
     if 'matricula' not in session:
         return redirect(url_for('login'))
     return render_template('index.html', acesso_completo=session.get('acesso_completo', False))
-    
-    if not first_access_sent:
-        # send_whatsapp_message("\u26a0\ufe0f O sistema SAPPP foi acessado pela primeira vez.")
-        first_access_sent = True
-
-    acesso_completo = session.get('acesso_completo', False)
-    return render_template('index.html', acesso_completo=acesso_completo)  
 
 @app.route('/get_lines')
 def get_lines():
@@ -196,14 +191,13 @@ def simulador():
 
 @app.route('/get_all_items')
 def get_all_items():
-    """Retorna todos os itens da lista com pesos."""
     rows = get_valid_csv_data()
     items = [
         {
             "descricao": item[1],
             "numero": item[0],
             "peso": int(item[2]) if item[2].isdigit() else 0,
-            "na": item[4] 
+            "na": item[4]
         }
         for item in rows
     ]
