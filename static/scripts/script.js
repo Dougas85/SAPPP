@@ -113,6 +113,17 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error("Erro ao buscar os itens:", error));
     });
 
+    // Destacar itens peso 5 //
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const calendarItems = document.querySelectorAll('#calendar div');
+        calendarItems.forEach(item => {
+            if 9parseInt(item.textContent) ===5) {
+                item.classlist.add('peso-5');
+            }
+        });
+    });
+
     // Função auxiliar para abrir o modal sem iniciar a fala automaticamente
     function openModal(numero, descricao, orientacao, referencia, peso) {
         document.getElementById('modalItem').innerText = `Item ${numero}`;
