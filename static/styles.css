@@ -135,6 +135,11 @@ tr:hover {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
+#calendar div:hover {
+    trasnform: scale(1.2);
+    background-color: #add8e6; /* Azul claro */
+}
+
 #calendar div.viewed {
     background-color: green;
     font-weight: bold;
