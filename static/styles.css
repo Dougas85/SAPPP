@@ -146,6 +146,10 @@ tr:hover {
     font-weight: bold;
 }
 
+.highlighted {
+    font-weight: bold; 
+    color: blue; /* Definir cor */
+
 /* Estilização do modal */
 dialog {
     width: 50%;
