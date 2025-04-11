@@ -140,12 +140,6 @@ tr:hover {
     background-color: #add8e6; /* Azul claro */
 }
 
-
-#calendar div.viewed {
-    background-color: green;
-    font-weight: bold;
-}
-
 .highlighted {
     font-weight: bold; 
     color: blue; /* Definir cor */
