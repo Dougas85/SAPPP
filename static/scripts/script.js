@@ -43,9 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (dayElement) {
                         dayElement.classList.remove('red-item');
                         dayElement.classList.add('viewed');
-                        if (line.peso === 5) {
-                            dayElement.classList.add('highlighted');
-                        }
+                        
                         viewedItems.add(line.numero);
                     }
                 });
