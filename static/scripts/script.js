@@ -115,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Destacar itens peso 5 //
 
-    document.addEventListener('DOMContentLoaded', function() {
         const calendarItems = document.querySelectorAll('#calendar div');
         calendarItems.forEach(item => {
             if (parseInt(item.textContent) === 5) {
