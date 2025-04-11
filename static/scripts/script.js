@@ -118,8 +118,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('DOMContentLoaded', function() {
         const calendarItems = document.querySelectorAll('#calendar div');
         calendarItems.forEach(item => {
-            if 9parseInt(item.textContent) ===5) {
-                item.classlist.add('peso-5');
+            if (parseInt(item.textContent) ===5) {
+                item.classList.add('peso-5');
             }
         });
     });
