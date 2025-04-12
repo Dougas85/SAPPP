@@ -12,6 +12,21 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+     // 🎯 Aqui entra a parte que aplica o negrito com base no peso
+    fetch('/get_all_items')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(item => {
+                if (item.peso === 5) {
+                    const el = document.getElementById(`day-${item.numero}`);
+                    if (el) {
+                        el.classList.add('bold-day'); // ou el.style.fontWeight = 'bold';
+                    }
+                }
+            });
+        });
+
+
     let viewedItems = new Set();
 
     document.getElementById('showLinesButton').addEventListener('click', function () {
