@@ -150,7 +150,7 @@ tr:hover {
 }
 
 #calendar div:hover {
-    trasnform: scale(1.2);
+    transform: scale(1.2);
     background-color: #add8e6; /* Azul claro */
      transform: translateY(0) scale(1.3);
 }
