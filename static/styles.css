@@ -135,6 +135,16 @@ tr:hover {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
+.bold-number {
+    font-weight: bold;
+}
+
+.bold-day {
+    font-weight: bold;
+    background-color: #3895f3 !important;
+    color: darkblue; /* opcional */
+}
+
 #calendar div:hover {
     trasnform: scale(1.2);
     background-color: #add8e6; /* Azul claro */
