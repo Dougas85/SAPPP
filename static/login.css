@@ -2,13 +2,23 @@
     0% {
         background-color: #b3e5fc; /* Azul claro */
     }
+    25% {
+        background-color: #0073e6; /* Azul Correios */
+    }
     50% {
         background-color: #0073e6; /* Azul Correios */
     }
+    75% {
+        background-color: #f2d11b; /* Azul claro */
+    }
+    85% {
+        background-color: #ede260; /* Azul Correios */
+    }
     100% {
-        background-color: #0073e6; /* Azul Correios */
+        background-color: #f4f48e; /* Azul Correios */
     }
 }
+
 
 body {
     margin: 0;
