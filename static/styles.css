@@ -135,6 +135,12 @@ tr:hover {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
+.viewed {
+    background-color: green !important; /* Define a cor verde */
+    color: white; /* Texto branco */
+}
+
+
 .bold-number {
     font-weight: bold;
 }
