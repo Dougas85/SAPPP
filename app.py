@@ -16,7 +16,8 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 app = Flask(__name__)
 app.secret_key = 'chave-super-secreta'
 
-MATRICULAS_AUTORIZADAS = {'81111045', '81143494', '88942872', '89090489', '89114051', '86518496', '89166078'}
+MATRICULAS_AUTORIZADAS = {'81111045', '81143494', '88942872', '89090489', '89114051', '86518496', '89166078', '81129726',
+                         '81120575', '81126077', '81134290', '89126661', '81134533', '81151888'}
 
 first_access_sent = False
 first_sort_sent = False
