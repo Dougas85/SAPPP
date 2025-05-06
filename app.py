@@ -12,7 +12,7 @@ from zoneinfo import ZoneInfo
 load_dotenv(dotenv_path=".env.local")
 
 # Definir a URL de conexão diretamente no código
-os.environ["DATABASE_URL"] = "postgres://postgres:lara1503*@db.naghbeyugssrygutrxjr.supabase.co:5432/postgres"
+os.environ["DATABASE_URL"] = "postgresql://postgres.ncxrcevezeaxcmcjlgrl:lara1503@aws-0-sa-east-1.pooler.supabase.com:6543/postgres"
 
 
 DATABASE_URL = os.getenv("DATABASE_URL")
