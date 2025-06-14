@@ -23,16 +23,22 @@
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    background-color: #0073e6; /* Azul Correios */
-    color: #333; /* Cinza escuro */
+    color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    border-radius: 16px; /* Bordas arredondadas */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra */
-    animation: colorOscillation 15s ease-in-out forwards; /* Animação de oscilação */
+    min-height: 100dvh;
+    overflow: hidden;
+    background-color: #f0f0f0; /* Cor de fundo neutra ou nenhuma */
 }
+
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    animation: colorOscillation 15s ease-in-out infinite;
+}
+
 
 .login-container {
     background-color: #ffffff; /* Branco */
