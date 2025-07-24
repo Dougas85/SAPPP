@@ -102,6 +102,26 @@ h1 {
     text-align: center;
 }
 
+.botao-voltar {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 20px auto;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    display: block;
+    text-align: center;
+}
+
+.botao-voltar:hover {
+    background-color: #ffcc00;
+    color: #003366;
+}
+
+
 /* Responsivo para telas pequenas */
 @media (max-width: 600px) {
     .container {
