@@ -82,6 +82,11 @@ function criarItem(item) {
 
         input.addEventListener('change', function() {
             calcularResultado();
+
+            
+             // Salvar no localStorage
+            localStorage.setItem(`item_${item.numero}`, input.value);
+
             document.querySelectorAll(`input[name="item_${item.numero}"]`).forEach(inp => {
                 const lbl = document.querySelector(`label[for="${inp.id}"]`);
                 lbl.classList.remove('checked');
@@ -119,6 +124,10 @@ function criarItem(item) {
 
         inputNA.addEventListener('change', function() {
             calcularResultado();
+            
+            // Salvar no localStorage
+            localStorage.setItem(`item_${item.numero}`, inputNA.value);
+
             document.querySelectorAll(`input[name="item_${item.numero}"]`).forEach(inp => {
                 const lbl = document.querySelector(`label[for="${inp.id}"]`);
                 lbl.classList.remove('checked');
@@ -136,6 +145,19 @@ function criarItem(item) {
 
     document.getElementById('itens-container').appendChild(div);
 }
+
+    
+    // Recuperar valor salvo no localStorage
+    const valorSalvo = localStorage.getItem(`item_${item.numero}`);
+    if (valorSalvo) {
+        const inputSalvo = document.getElementById(`item_${item.numero}_${valorSalvo}`);
+        if (inputSalvo) {
+            inputSalvo.checked = true;
+            const labelSalvo = document.querySelector(`label[for="${inputSalvo.id}"]`);
+            labelSalvo.classList.add('checked');
+        }
+    }
+
 
 
         fetch('/get_all_items')
