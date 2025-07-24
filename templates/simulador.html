@@ -55,6 +55,18 @@
             document.getElementById('count-s').textContent = `S = ${countS}`;
             document.getElementById('count-n').textContent = `N = ${countN}`;
             document.getElementById('count-na').textContent = `NA = ${countNA}`;
+
+            atualizarBarraProgresso();
+        }
+
+         function atualizarBarraProgresso() {
+            const totalItens = document.querySelectorAll('.botoes').length;
+            const respondidos = Array.from(document.querySelectorAll('.botoes')).filter(div => {
+                return div.querySelector('input:checked');
+            }).length;
+
+            const percentual = totalItens > 0 ? (respondidos / totalItens) * 100 : 0;
+            document.getElementById('progresso-preenchido').style.width = percentual.toFixed(2) + "%";
         }
 
 function criarItem(item) {
@@ -163,6 +175,7 @@ function criarItem(item) {
     function voltarParaPrincipal() {
         window.location.href = "/"
     }
+
     </script>
 </body>
 </html>
