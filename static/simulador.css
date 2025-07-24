@@ -121,6 +121,23 @@ h1 {
     color: #003366;
 }
 
+.barra-progresso {
+    width: 100%;
+    background-color: #ccc;
+    border-radius: 5px;
+    height: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+#progresso-preenchido {
+    height: 100%;
+    width: 0%;
+    background-color: #007bff;
+    transition: width 0.3s ease;
+}
+
+
 
 /* Responsivo para telas pequenas */
 @media (max-width: 600px) {
