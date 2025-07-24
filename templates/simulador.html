@@ -80,11 +80,8 @@ function criarItem(item) {
         labelBotao.appendChild(input);
         labelBotao.appendChild(span);
 
-        input.addEventListener('change', function() {
+        input.addEventListener('change', function () {
             calcularResultado();
-
-            
-             // Salvar no localStorage
             localStorage.setItem(`item_${item.numero}`, input.value);
 
             document.querySelectorAll(`input[name="item_${item.numero}"]`).forEach(inp => {
@@ -99,7 +96,6 @@ function criarItem(item) {
         botoes.appendChild(labelBotao);
     });
 
-    // Adicionar opção "NA" apenas se o item tiver NA marcado como "S"
     if (item.na === "S") {
         const inputNA = document.createElement('input');
         inputNA.type = 'radio';
@@ -116,16 +112,14 @@ function criarItem(item) {
         labelBotaoNA.appendChild(inputNA);
         labelBotaoNA.appendChild(spanNA);
 
-        // Se não tiver NA permitido, desativa e oculta visualmente
+        / Se não tiver NA permitido, desativa e oculta visualmente
         if (item.na !== "S") {
             labelBotaoNA.style.visibility = 'hidden';
             labelBotaoNA.style.pointerEvents = 'none';
         }
 
-        inputNA.addEventListener('change', function() {
+        inputNA.addEventListener('change', function () {
             calcularResultado();
-            
-            // Salvar no localStorage
             localStorage.setItem(`item_${item.numero}`, inputNA.value);
 
             document.querySelectorAll(`input[name="item_${item.numero}"]`).forEach(inp => {
@@ -142,12 +136,9 @@ function criarItem(item) {
 
     div.appendChild(label);
     div.appendChild(botoes);
-
     document.getElementById('itens-container').appendChild(div);
-}
 
-    
-    // Recuperar valor salvo no localStorage
+    // ✅ Recuperar valor salvo no localStorage (agora no lugar certo)
     const valorSalvo = localStorage.getItem(`item_${item.numero}`);
     if (valorSalvo) {
         const inputSalvo = document.getElementById(`item_${item.numero}_${valorSalvo}`);
@@ -157,7 +148,7 @@ function criarItem(item) {
             labelSalvo.classList.add('checked');
         }
     }
-
+}
 
 
         fetch('/get_all_items')
