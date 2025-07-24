@@ -102,6 +102,13 @@ h1 {
     text-align: center;
 }
 
+.botoes-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
 .botao-voltar {
     background-color: #007bff;
     color: white;
@@ -114,6 +121,9 @@ h1 {
     transition: background-color 0.3s, color 0.3s;
     display: block;
     text-align: center;
+    width: 200px;
+    height: 45px;
+    box-sizing: border-box;
 }
 
 .botao-voltar:hover {
