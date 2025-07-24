@@ -10,9 +10,23 @@
     <div class="container">
         <h1>CheckList SAPPP</h1>
         <button class="botao-voltar" onclick="voltarParaPrincipal()">Voltar Página</button>
-        <div class="barra-progresso">
+        <button class="botao-limpar" onclick="limparRespostas()">Limpar Respostas</button>
+        <div class="barra-progresso" style="position: relative;">
             <div id="progresso-preenchido"></div>
+            <span id="porcentagem-progresso" style="
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                color: #000;
+            ">0%</span>
         </div>
+
         <div id="itens-container"></div>
 
         <div class="resultado">
@@ -66,7 +80,12 @@
             }).length;
 
             const percentual = totalItens > 0 ? (respondidos / totalItens) * 100 : 0;
-            document.getElementById('progresso-preenchido').style.width = percentual.toFixed(2) + "%";
+            const barra = document.getElementById('progresso-preenchido');
+            const texto = document.getElementById('porcentagem-progresso');
+        
+            barra.style.width = percentual.toFixed(2) + "%";
+            texto.textContent = percentual.toFixed(0) + "%";
+                  
         }
 
 function criarItem(item) {
@@ -175,6 +194,32 @@ function criarItem(item) {
     function voltarParaPrincipal() {
         window.location.href = "/"
     }
+
+    function limparRespostas() {
+        // Desmarca todos os inputs
+        document.querySelectorAll('.botoes input').forEach(input => {
+            input.checked = false;
+        });
+    
+        // Remove classes visuais
+        document.querySelectorAll('.botoes label').forEach(lbl => {
+            lbl.classList.remove('checked');
+        });
+    
+        // Limpa localStorage dos itens
+        document.querySelectorAll('.botoes').forEach(div => {
+            const input = div.querySelector('input');
+            if (input && input.name) {
+                localStorage.removeItem(input.name);
+            }
+        });
+    
+        // Atualiza contadores e barra
+        calcularResultado();
+        atualizarBarraProgresso();
+    }
+
+    
 
     </script>
 </body>
