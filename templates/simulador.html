@@ -5,6 +5,7 @@
     <title>Simulador de Checklist</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='simulador.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -12,21 +13,12 @@
         <div class="botoes-container">
             <button class="botao-voltar" onclick="voltarParaPrincipal()">Voltar Página</button>
             <button class="botao-voltar" onclick="limparRespostas()">Limpar Respostas</button>
-        </div>    
+            <button id="btn-gerar" class="botao-voltar" onclick="mostrarModal()">Gerar Avaliação</button>
+        </div>
+
         <div class="barra-progresso" style="position: relative;">
             <div id="progresso-preenchido"></div>
-            <span id="porcentagem-progresso" style="
-                position: absolute;
-                top: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: bold;
-                color: #000;
-            ">0%</span>
+            <span id="porcentagem-progresso">0%</span>
         </div>
 
         <div id="itens-container"></div>
@@ -36,11 +28,27 @@
             <div>
                 <span id="count-s">S = 0</span>
                 <span id="count-n">N = 0</span>
-                <span id="count-na">NA = 0</span>          
+                <span id="count-na">NA = 0</span>
+            </div>
         </div>
     </div>
 
-    <script>
+    <!-- Modal para dados do usuário -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h3>Informações do Avaliado</h3>
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" style="width: 100%; margin-bottom: 10px;" />
+            <label for="matricula">Matrícula:</label>
+            <input type="text" id="matricula" style="width: 100%; margin-bottom: 10px;" />
+            <label for="unidade">Unidade:</label>
+            <input type="text" id="unidade" style="width: 100%; margin-bottom: 15px;" />
+            <button class="botao-voltar" onclick="gerarPDFProfissional()">Gerar PDF</button>
+        </div>
+    </div>
+
+    <script defer>
         let totalPeso = 0;
 
         function calcularResultado() {
@@ -57,13 +65,13 @@
                 if (tipo === "S") {
                     pontosObtidos += peso;
                     countS++;
-            } else if (tipo === "N") {
-                countN++;
-            } else if (tipo === "NA") {
-                pesoNA += peso;
-                countNA++;
-            }
-        });
+                } else if (tipo === "N") {
+                    countN++;
+                } else if (tipo === "NA") {
+                    pesoNA += peso;
+                    countNA++;
+                }
+            });
 
             const denominador = totalPeso - pesoNA;
             const resultado = denominador > 0 ? (pontosObtidos / denominador) * 100 : 0;
@@ -73,9 +81,10 @@
             document.getElementById('count-na').textContent = `NA = ${countNA}`;
 
             atualizarBarraProgresso();
+            mostrarBotaoGerar(resultado);
         }
 
-         function atualizarBarraProgresso() {
+        function atualizarBarraProgresso() {
             const totalItens = document.querySelectorAll('.botoes').length;
             const respondidos = Array.from(document.querySelectorAll('.botoes')).filter(div => {
                 return div.querySelector('input:checked');
@@ -84,144 +93,328 @@
             const percentual = totalItens > 0 ? (respondidos / totalItens) * 100 : 0;
             const barra = document.getElementById('progresso-preenchido');
             const texto = document.getElementById('porcentagem-progresso');
-        
+
             barra.style.width = percentual.toFixed(2) + "%";
             texto.textContent = percentual.toFixed(0) + "%";
-                  
         }
 
-function criarItem(item) {
-    const div = document.createElement('div');
-    div.classList.add('item');
-
-    const label = document.createElement('label');
-    label.innerText = `${item.numero} - ${item.descricao} (Peso: ${item.peso})`;
-
-    const botoes = document.createElement('div');
-    botoes.classList.add('botoes');
-
-    ['S', 'N'].forEach(valor => {
-        const input = document.createElement('input');
-        input.type = 'radio';
-        input.name = `item_${item.numero}`;
-        input.value = valor;
-        input.dataset.peso = item.peso;
-        input.id = `item_${item.numero}_${valor}`;
-
-        const span = document.createElement('span');
-        span.innerText = valor;
-
-        const labelBotao = document.createElement('label');
-        labelBotao.setAttribute('for', input.id);
-        labelBotao.appendChild(input);
-        labelBotao.appendChild(span);
-
-        input.addEventListener('change', function () {
-            calcularResultado();
-            localStorage.setItem(`item_${item.numero}`, input.value);
-
-            document.querySelectorAll(`input[name="item_${item.numero}"]`).forEach(inp => {
-                const lbl = document.querySelector(`label[for="${inp.id}"]`);
-                lbl.classList.remove('checked');
-            });
-            if (input.checked) {
-                labelBotao.classList.add('checked');
+        function mostrarBotaoGerar(resultado) {
+            const btn = document.getElementById('btn-gerar');
+            // Mostrar botão apenas se todos respondidos (barra = 100%)
+            const totalItens = document.querySelectorAll('.botoes').length;
+            const respondidos = Array.from(document.querySelectorAll('.botoes')).filter(div => div.querySelector('input:checked')).length;
+            if (respondidos === totalItens && totalItens > 0) {
+                btn.style.display = 'inline-block';
+            } else {
+                btn.style.display = 'none';
             }
-        });
-
-        botoes.appendChild(labelBotao);
-    });
-
-    if (item.na === "S") {
-        const inputNA = document.createElement('input');
-        inputNA.type = 'radio';
-        inputNA.name = `item_${item.numero}`;
-        inputNA.value = 'NA';
-        inputNA.dataset.peso = item.peso;
-        inputNA.id = `item_${item.numero}_NA`;
-
-        const spanNA = document.createElement('span');
-        spanNA.innerText = 'NA';
-
-        const labelBotaoNA = document.createElement('label');
-        labelBotaoNA.setAttribute('for', inputNA.id);
-        labelBotaoNA.appendChild(inputNA);
-        labelBotaoNA.appendChild(spanNA);
-
-        // Se não tiver NA permitido, desativa e oculta visualmente
-        if (item.na !== "S") {
-            labelBotaoNA.style.visibility = 'hidden';
-            labelBotaoNA.style.pointerEvents = 'none';
         }
 
-        inputNA.addEventListener('change', function () {
-            calcularResultado();
-            localStorage.setItem(`item_${item.numero}`, inputNA.value);
+        function criarItem(item) {
+            const div = document.createElement('div');
+            div.classList.add('item');
 
-            document.querySelectorAll(`input[name="item_${item.numero}"]`).forEach(inp => {
-                const lbl = document.querySelector(`label[for="${inp.id}"]`);
-                lbl.classList.remove('checked');
+            const label = document.createElement('label');
+            label.innerText = `${item.numero} - ${item.descricao} (Peso: ${item.peso})`;
+
+            const botoes = document.createElement('div');
+            botoes.classList.add('botoes');
+
+            ['S', 'N'].forEach(valor => {
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `item_${item.numero}`;
+                input.value = valor;
+                input.dataset.peso = item.peso;
+                input.id = `item_${item.numero}_${valor}`;
+
+                const span = document.createElement('span');
+                span.innerText = valor;
+
+                const labelBotao = document.createElement('label');
+                labelBotao.setAttribute('for', input.id);
+                labelBotao.appendChild(input);
+                labelBotao.appendChild(span);
+
+                input.addEventListener('change', function () {
+                    calcularResultado();
+                    localStorage.setItem(`item_${item.numero}`, input.value);
+
+                    document.querySelectorAll(`input[name="item_${item.numero}"]`).forEach(inp => {
+                        const lbl = document.querySelector(`label[for="${inp.id}"]`);
+                        lbl.classList.remove('checked');
+                    });
+                    if (input.checked) {
+                        labelBotao.classList.add('checked');
+                    }
+                });
+
+                botoes.appendChild(labelBotao);
             });
-            if (inputNA.checked) {
-                labelBotaoNA.classList.add('checked');
+
+            if (item.na === "S") {
+                const inputNA = document.createElement('input');
+                inputNA.type = 'radio';
+                inputNA.name = `item_${item.numero}`;
+                inputNA.value = 'NA';
+                inputNA.dataset.peso = item.peso;
+                inputNA.id = `item_${item.numero}_NA`;
+
+                const spanNA = document.createElement('span');
+                spanNA.innerText = 'NA';
+
+                const labelBotaoNA = document.createElement('label');
+                labelBotaoNA.setAttribute('for', inputNA.id);
+                labelBotaoNA.appendChild(inputNA);
+                labelBotaoNA.appendChild(spanNA);
+
+                inputNA.addEventListener('change', function () {
+                    calcularResultado();
+                    localStorage.setItem(`item_${item.numero}`, inputNA.value);
+
+                    document.querySelectorAll(`input[name="item_${item.numero}"]`).forEach(inp => {
+                        const lbl = document.querySelector(`label[for="${inp.id}"]`);
+                        lbl.classList.remove('checked');
+                    });
+                    if (inputNA.checked) {
+                        labelBotaoNA.classList.add('checked');
+                    }
+                });
+
+                botoes.appendChild(labelBotaoNA);
             }
-        });
 
-        botoes.appendChild(labelBotaoNA);
-    }
+            div.appendChild(label);
+            div.appendChild(botoes);
+            document.getElementById('itens-container').appendChild(div);
 
-    div.appendChild(label);
-    div.appendChild(botoes);
-    document.getElementById('itens-container').appendChild(div);
-
-    // ✅ Recuperar valor salvo no localStorage (agora no lugar certo)
-    const valorSalvo = localStorage.getItem(`item_${item.numero}`);
-    if (valorSalvo) {
-        const inputSalvo = document.getElementById(`item_${item.numero}_${valorSalvo}`);
-        if (inputSalvo) {
-            inputSalvo.checked = true;
-            const labelSalvo = document.querySelector(`label[for="${inputSalvo.id}"]`);
-            labelSalvo.classList.add('checked');
+            // Recuperar valor salvo no localStorage
+            const valorSalvo = localStorage.getItem(`item_${item.numero}`);
+            if (valorSalvo) {
+                const inputSalvo = document.getElementById(`item_${item.numero}_${valorSalvo}`);
+                if (inputSalvo) {
+                    inputSalvo.checked = true;
+                    const labelSalvo = document.querySelector(`label[for="${inputSalvo.id}"]`);
+                    labelSalvo.classList.add('checked');
+                }
+            }
         }
-    }
-}
-
 
         fetch('/get_all_items')
             .then(res => res.json())
             .then(data => {
                 totalPeso = data.reduce((acc, item) => acc + item.peso, 0);
                 data.forEach(item => criarItem(item));
+                calcularResultado();
             });
-    function voltarParaPrincipal() {
-        window.location.href = "/"
-    }
 
-    function limparRespostas() {
-        // Desmarca todos os inputs
-        document.querySelectorAll('.botoes input').forEach(input => {
-            input.checked = false;
-        });
-    
-        // Remove classes visuais
-        document.querySelectorAll('.botoes label').forEach(lbl => {
-            lbl.classList.remove('checked');
-        });
-    
-        // Limpa localStorage dos itens
-        document.querySelectorAll('.botoes').forEach(div => {
-            const input = div.querySelector('input');
-            if (input && input.name) {
-                localStorage.removeItem(input.name);
+        function voltarParaPrincipal() {
+            window.location.href = "/";
+        }
+
+        function limparRespostas() {
+            document.querySelectorAll('.botoes input').forEach(input => input.checked = false);
+            document.querySelectorAll('.botoes label').forEach(lbl => lbl.classList.remove('checked'));
+            document.querySelectorAll('.botoes').forEach(div => {
+                const input = div.querySelector('input');
+                if (input && input.name) {
+                    localStorage.removeItem(input.name);
+                }
+            });
+            calcularResultado();
+            atualizarBarraProgresso();
+        }
+
+        // Modal controle
+        function mostrarModal() {
+            document.getElementById('modal').style.display = 'block';
+        }
+        function fecharModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('modal')) {
+                fecharModal();
             }
-        });
-    
-        // Atualiza contadores e barra
-        calcularResultado();
-        atualizarBarraProgresso();
-    }
+        }
+
+        // Definir função antes de tudo
+        async function carregarImagemBase64(url) {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(blob);
+            });
+        }
+
+
+        async function gerarPDFProfissional() {
+            const nome = document.getElementById('nome').value.trim();
+            const matricula = document.getElementById('matricula').value.trim();
+            const unidade = document.getElementById('unidade').value.trim();
+
+            if (!nome || !matricula || !unidade) {
+                alert('Preencha todos os campos.');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+            const width = doc.internal.pageSize.getWidth();
+            const height = doc.internal.pageSize.getHeight();
+
+            // Cores institucionais
+            const azul = [0, 102, 204];
+            const amarelo = [255, 204, 0];
+
+            // ⚠️ Carregar imagens
+            const logoBase64 = await carregarImagemBase64('/static/data/logo.png');
+            const assinaturaBase64 = await carregarImagemBase64('/static/data/assinatura.png');
+
+            // Fundo e moldura
+            doc.setFillColor(255, 255, 255);
+            doc.rect(0, 0, width, height, 'F');
+            doc.setDrawColor(...azul);
+            doc.setLineWidth(3);
+            doc.rect(30, 30, width - 60, height - 60);
 
     
+            doc.addImage(logoBase64, 'PNG', width / 2 - 40, 40, 80, 80);
+
+
+            // Título
+            doc.setFontSize(26);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(...azul);
+            doc.text("CERTIFICADO DE AVALIAÇÃO", width / 2, 140, { align: "center" });
+
+            // Linha separadora
+            doc.setDrawColor(...amarelo);
+            doc.setLineWidth(2);
+            doc.line(70, 155, width - 70, 155);
+
+            // Informações
+            let y = 190;
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Nome: ${nome}`, 60, y);
+            doc.text(`Matrícula: ${matricula}`, 60, y + 20);
+            doc.text(`Unidade: ${unidade}`, 60, y + 40);
+
+            // Cálculo
+            const botoesSelecionados = document.querySelectorAll('.botoes input:checked');
+            const itensUnicos = new Set();
+            let totalPeso = 0;
+
+            document.querySelectorAll('.botoes input').forEach(input => {
+                const name = input.name;
+                if (!itensUnicos.has(name)) {
+                    totalPeso += parseFloat(input.dataset.peso || 0);
+                    itensUnicos.add(name);
+                }
+            });
+
+            let pontosObtidos = 0;
+            let pesoNA = 0;
+            botoesSelecionados.forEach(input => {
+                const peso = parseFloat(input.dataset.peso || 0);
+                if (input.value === 'S') pontosObtidos += peso;
+                else if (input.value === 'NA') pesoNA += peso;
+            });
+
+            const base = totalPeso - pesoNA;
+            const resultado = base > 0 ? (pontosObtidos / base) * 100 : 0;
+
+            // Classificação
+            let classificacao = "Não Certificado";
+            if (resultado >= 95) classificacao = "Ouro";
+            else if (resultado >= 90) classificacao = "Prata";
+            else if (resultado >= 80) classificacao = "Bronze";
+
+            // Texto padrão
+            const hoje = new Date().toLocaleDateString();
+            const textoPadrao = `Informamos que o ${unidade}, através do(a) avaliador(a) ${nome}, matrícula ${matricula}, ` +
+                `alcançou o resultado de ${resultado.toFixed(2)}% classificado como ${classificacao} na Avaliação do dia ${hoje}.`;
+
+            y += 80;
+            doc.setFontSize(13);
+            doc.setFont("helvetica", "italic");
+            doc.setTextColor(50, 50, 50);
+            const textoQuebrado = doc.splitTextToSize(textoPadrao, width - 120);
+            doc.text(textoQuebrado, 60, y);
+            y += textoQuebrado.length * 18;
+
+            // Itens não conformes
+            y += 20;
+            doc.setFontSize(15);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(...azul);
+            doc.text("Itens com Não Conformidade:", 60, y);
+            y += 25;
+
+            const erros = [];
+            botoesSelecionados.forEach(input => {
+                if (input.value === 'N') {
+                    const itemDiv = input.closest('.item');
+                    const textoItem = itemDiv?.querySelector('label')?.innerText;
+                    if (textoItem) erros.push(textoItem);
+                }
+            });
+
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(0, 0, 0);
+            if (erros.length === 0) {
+                doc.text("Nenhum item assinalado como 'N'.", 60, y);
+                y += 20;
+            } else {
+                erros.forEach(text => {
+                    if (y > height - 100) {
+                        doc.addPage();
+                        y = 50;
+                    }
+                    const linha = doc.splitTextToSize(text, width - 120);
+                    doc.text(linha, 70, y);
+                    y += linha.length * 16;
+                });
+            }
+
+            // Resultado final
+            y += 30;
+            doc.setFontSize(16);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Resultado: ${resultado.toFixed(2)}%`, 60, y);
+
+            const cores = {
+                Ouro: [212, 175, 55],
+                Prata: [192, 192, 192],
+                Bronze: [205, 127, 50],
+                "Não Certificado": [200, 0, 0]
+            };
+            const cor = cores[classificacao] || [0, 0, 0];
+            y += 25;
+            doc.setTextColor(...cor);
+            doc.text(`Classificação: ${classificacao}`, 60, y);
+
+            // Assinatura
+            const assinaturaY = height - 100;
+            doc.addImage(assinaturaBase64, 'PNG', 60, assinaturaY - 60, 120, 60);
+            doc.setLineWidth(0.5);
+            doc.setDrawColor(0, 0, 0);
+            doc.line(60, assinaturaY, 200, assinaturaY);
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text("Assinatura do Responsável", 60, assinaturaY + 15);
+
+            // Finalizar
+            doc.save(`Certificado_${nome.replace(/ /g, "_")}.pdf`);
+            fecharModal();
+        }
+
 
     </script>
 </body>
