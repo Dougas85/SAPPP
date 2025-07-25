@@ -1,0 +1,62 @@
+Lista: 2025 - CDD - CHECKLIST CAE,,,,,,
+Nº,Item de Verificação,Peso,Tipo,NA,Orientação,Referência
+1,A abertura e o fechamento da unidade é realizada com a presença de um dos gestores ou empregado devidamente autorizado?,1,N,N,,MANORG 11/6
+2,A estrutura predial interna e externa está limpa e conservada?,1,N,N,,MANORG 11/6
+3,"Todos empregados estão utilizando uniforme, crachá e EPI?",1,N,N,,MANORG 11/6
+4,A unidade possui equipamento (monitor ou TV) com Gestão à Vista e a mesmo encontra-se em uso?,1,N,N,,MANORG 11/6
+5,"A unidade possui monitoramento por câmeras (CFTV) ou na inexistência, os objetos são armazenados em local seguro?",1,N,N,,MANORG 11/6
+6,Existem as sinalizações e demarcações necessárias para Gestão e Comunicação Visual na unidade?,1,N,N,,MANORG 11/6
+7,As estações de trabalho estão limpas e organizadas?,1,N,N,,MANORG 11/6
+8,Os equipamentos estão em bom estado de conservação e em uso?,1,N,N,,MANORG 11/6
+9,Os bens patrimoniais para recolhimento na unidade são tratados conforme o previsto?,1,N,N,,MANORG 11/6
+10,Os veículos e bicicletas da unidade estão organizados internamente e em bom estado de Conservação?,1,N,N,Verificar se as eventuais avarias possuem processos de apuração comunicados ao CTO.,MANORG 11/6
+11,"Há reuniões semanais/quinzenais, do gestor junto à equipe para divulgação de assuntos de interesse da unidade (Primeira Hora, TLT, reuniões de clima organizacional, Divulgação das verificações da PPP, boletins informativos, dentre outras)?",1,N,N,,MANORG 11/6
+12,Os gestores conhecem as informações e os sistemas necessários para a operação e a obtenção dos resultados da unidade?,1,N,N,,MANORG 11/6
+13,"O dimensionamento foi implantado na prática, conforme regras descritas no MANPOC 8/8 anexo 02?",1,N,S,Considerar NA caso o SD/SDE esteja suspenso por determinação do DEDIS.,MANORG 11/6
+14,Os processos de segurança/guarda dos objetos qualificados estão sendo realizados conforme procedimentos previstos?,1,N,N,,MANORG 11/6
+15,Todos os distritos previstos possuem Smartphones e estão em funcionamento?,1,N,N,,MANORG 11/6
+16,Os Unitizadores estão sendo encaminhados diariamente para os Centralizadores e lançados no SGRU?,1,N,N,Verificar inclusive unidades com entreposto.,MANORG 11/6
+17,Há ações em andamento para escoamento de carga prevista não entregue?,1,N,S,Considerar NA se a unidade não possuir carga represada/resto prevista para distribuição no dia da verificação.,MANORG 11/6
+18,A unidade adequa a jornada de trabalho da equipe para otimizar o tempo interno e maximizar o tempo Externo?,1,N,N,,MANORG 11/6
+19,"Os lançamentos e aferição de resíduos de objetos simples e qualificados no SGPD e no SRO, estão condizentes com a realidade?",1,N,N,,MANORG 11/6
+20,Há regularidade/fidedignidade nas informações registradas nos sistemas utilizados na unidade?,1,N,N,,MANORG 11/6
+21,Há ações para melhoria da efetividade da primeira tentativa de entrega ao cliente (EPTC) e demais indicadores de processo (cesta DODI)?,1,N,N,,MANORG 11/6
+22,"Há acompanhamento e ações relativas aos indicadores de frota (IRCF, ICCF, ICMF, ICAF)?",1,N,N,Acessar os Indicadores do Painel do DEDIS (Gestão da Frota) e verificar se a unidade faz a gestão dos indicadores da frota.,MANORG 11/6
+23,São realizadas ações para prevenir/evitar os extravios?,1,N,N,,MANORG 11/6
+24,"A unidade está realizando avaliação do processo da PPP de acordo com o cronograma, com Plano de Ação validado pela GERAE e as ações planejadas estão sendo realizadas dentro do prazo informado?",2,N,N,,MANORG 11/6
+25,Existem ações para o acompanhamento mensal visando a melhoria dos processos na unidade?,1,N,N,,MANORG 11/6
+26,"A unidade tratou as pendências no SGD, no último trimestre?",1,N,N,,MANORG 11/6
+27,"Todos os AR, comprovantes(AR digital, convencional, comprovantes de coleta, etc) estão sendo tratados adequadamente na prestação de contas e expedição?",1,N,N,,MANORG 11/6
+28,"A unidade realiza o lançamento das informações de não entrega dos objetos (FAC e Mala Direta) no sistema CEDO de forma correta, diariamente?",1,N,N,,MANORG 11/6
+29,Os serviços de coleta estão sendo realizados conforme o previsto?,1,N,S,Considerar NA para unidades que não executam os serviços de coleta.,MANORG 11/6
+30,"Após a ultima visita do CAE, houve elaboração do Plano de ação corretiva para cada não conformidade apontada?",1,N,S,"Considerar NA para unidades com visitas realizadas no primeiro trimestre de 2025 (Jan/Fev/Mar), quando não havia obrigatoriedade de PAC para as não conformidades.",MANORG 11/6
+31,Os itens reincidentes apontados na visita anterior foram tratados adequadamente?,1,N,S,Considerar não se aplica caso não tenha sido registrado itens reincidentes na visita anterior.,MANORG 11/6
+32,A unidade está com a CIPA devidamente regularizada e os empregados realizaram os cursos de capacitação?,1,N,S,Verificar o processo e Ata de reuniões. Considerar NA se a unidade estiver dentro dos parâmetros estabelecidos pela Cláusula 37 - Operacionalização da Cláusula - Do ACT 2024/2025.,MANORG 11/6
+33,São anexados avisos de tentativa aos pedidos de LR (SCOL)?,1,N,S,Considerar NA para unidades que não realizam os serviços de LR.,MANORG 11/6
+34,O SCOL está sendo conferido e baixado corretamente na prestação de contas?,1,N,S,Considerar NA para unidades que não executam os serviços de coleta.,MANORG 11/6
+35,O Alvará de funcionamento e demais documentos da unidade estão organizados e em fácil acesso?,1,N,N,,MANORG 11/6
+36,O horário dos carteiros é compatível com o horário de recebimento da carga e realização das atividades?,1,N,N,,MANORG 11/6
+37,"No recebimento da carga, a unidade realiza as verificações previstas para as linhas de transporte de carga (LTN, LTR e LTU)?",1,N,S,"Verificar se os dados dos RDVOs das linhas próprias da unidade são lançados conforme previsto (preenchimento de TMS, conferência de lacre) e se são realizadas todas as verificações quanto à integridade física, mal encaminhamento ou falta dos objetos sob registro e unitizadores recebidos e providenciadas as lavraturas dos documentos pertinentes para cada caso. Considerar NA nas unidades onde não recebem linhas de transporte de carga (LTN, LTR e LTU).",MANORG 11/6
+38,"O gestor verifica se todos os carteiros fazem os lançamentos previstos no SGPD e faz os lançamentos de Validação da Carga Simples do Dia, ME, MD, Carga local, posta restante, Carga Qualificada do DIA, Resíduo de Mesa, etc.?",1,N,N,,MANORG 11/6
+39,"Os móveis e equipamentos operacionais são usados correta e adequadamente (mesa de carteiro, cadeira, suporte caixeta, mesa multplo uso, carrinho transporte caixeta/mala, etc.), estão em condições de uso e em pleno funcionamento?",1,N,N,"Verificar também se os mobiliários e equipamentos utilizados estão limpos, em boas condições de uso e sem materiais de uso pessoal.",MANORG 11/6
+40,As etiquetas de TD e SL dos Objetos Simples e de Objetos Qualificados estão padronizadas?,1,N,N,,MANORG 11/6
+41,"Na Unidade, o controle da carga da Distribuição Domiciliária Alternada (DDA) é realizado conforme previsto?",1,N,N,"Observar se o controle é devidamente documentado, com carteiros orientados, para serem acionados quando necessário, de forma a se evitar resto de mesa.",MANORG 11/6
+42,O tratamento dos objetos qualificados/encomendas é realizado conforme o previsto?,1,N,N,"Verificar se: a) A LOEC Automática é utilizada em 100% dos distritos; b) é realizada a triagem de acordo com o distrito indicado no sistema, simultaneamente à leitura.",MANORG 11/6
+43,A unidade está utilizando SRO móvel em todos os distritos?,1,N,N,,MANORG 11/6
+44,"A Unidade, em caso de irregularidades, emite os documentos pertinentes?",1,N,N,Verificar se São lavradas CIE quando constatadas inconformidades na expedição.,MANORG 11/6
+45,Todos os objetos em devolução são tratados conforme o previsto?,1,N,N,"Verificar se: a) Os procedimentos previstos para refugo estão sendo realizados; b) se os objetos em devolução receberam o tratamento conforme o previsto (carimbação e anotações, etc.) c)s e os objetos com chancela de devolução eletrônica são baixados conforme previsto.",MANORG 11/6
+46,A entrega interna de objetos é realizada conforme previsto?,1,N,N,,MANORG 11/6
+47,"A prestação de contas está sendo realizada conforme o previsto, verificando as anotações na LOEC (em caso de não utilização do SRO móvel), LDI, AR, LEM, LCM e demais recibos de forma clara e legível?",1,N,N,Verificar também se a qualidade das imagens permite identificação dos dados.,MANORG 11/6
+48,O acesso de pessoas à unidade é controlado?,1,N,N,,MANORG 11/6
+49,A conferência exaustiva dos objetos é realizada conforme o previsto?,2,N,N,,MANORG 11/6
+50,Todos os objetos com prazo de entrega previsto para o dia saem para a distribuição?,1,N,N,,MANORG 11/6
+51,"Após o retorno dos carteiros, é verificado pela gestão da unidade se há resto de distribuição?",1,N,N,,MANORG 11/6
+52,"O gerente e supervisores conhecem as ferramentas existentes para acompanhamento dos resultados (Painel DEDIS, DEPLA, entre outros Corporativos ou Regionais)?",1,N,N,,MANORG 11/6
+53,A unidade trata as pendências de manifestações da Ouvidoria conforme o previsto?,1,N,N,,MANORG 11/6
+54,A produtividade geral é acompanhada pelos gestores eliminando ociosidades/perdas por espera?,1,N,N,,MANORG 11/6
+55,A unidade tem realizado as coletas de encomendas conforme previsto nas ferramentas de Coleta Interativa e SCOL?,1,N,S,Considerar NA para unidades que não não realizam coletas de encomendas.,MANORG 11/6
+56,Os objetos que ficaram como resíduo no dia anterior são priorizados na distribuição do dia?,1,N,N,Considerar CONFORME caso a Unidade não possua resíduo do dia anterior.,MANORG 11/6
+57,A unidade faz a gestão das pendências no SGM e no SIGMA?,1,N,S,Considerar NA para unidades que não executam serviços de Malotes.,MANORG 11/6
+58,"Todos os equipamentos quebrados ou com defeitos estão com as ações de manutenções abertas na unidade (Help Desk, PD, etc.)?",1,N,N,,MANORG 11/6
+59,Os carteiros realizam a contagem dos objetos qualificados recebidos?,1,N,N,,MANORG 11/6
+60,Os veículos e motos quebrados ou com algum problema estão com as OS abertas para manutenção?,1,N,N,,MANORG 11/6
