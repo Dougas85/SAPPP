@@ -37,7 +37,7 @@ def get_db_connection():
 def get_valid_csv_data():
     try:
         caminho_csv = os.path.join(app.static_folder, 'data', 'SAPPP_office.csv')
-        with open(caminho_csv, newline='', encoding='windows-1252') as csvfile:
+        with open(caminho_csv, newline='', encoding='UTF-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=';')
             rows = list(reader)
 
