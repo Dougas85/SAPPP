@@ -17,7 +17,8 @@ os.environ["DATABASE_URL"] = "postgresql://postgres.ncxrcevezeaxcmcjlgrl:lara150
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
+
 app.secret_key = 'chave-super-secreta'
 
 MATRICULAS_AUTORIZADAS = {'81111045', '81143494', '88942872', '89090489', '89114051', '86518496', '89166078', '81129726',
@@ -35,22 +36,25 @@ def get_db_connection():
 
 def get_valid_csv_data():
     try:
-        with open('data/SAPPP_office.csv', newline='', encoding='UTF-8') as csvfile:
+        caminho_csv = os.path.join(app.static_folder, 'data', 'SAPPP_office.csv')
+        with open(caminho_csv, newline='', encoding='windows-1252') as csvfile:
             reader = csv.reader(csvfile, delimiter=';')
             rows = list(reader)
 
         valid_rows = []
         numbering = 1
 
-        for row in rows:
-            if row and row[0].isdigit():
-                valid_rows.append([numbering] + row[1:])
+        for row in rows[1:]:  # Ignora a primeira linha (cabeçalho)
+            if row and len(row) >= 4 and row[0].strip().isdigit():
+                valid_rows.append([numbering] + row[1:])  # Recria a numeração
                 numbering += 1
 
+        print(f"[INFO] Linhas válidas carregadas: {len(valid_rows)}")
         return valid_rows
     except Exception as e:
         print(f"[ERRO] Falha ao carregar CSV: {e}")
         return []
+
 
 def is_weekday():
     now = datetime.datetime.now(ZoneInfo("America/Sao_Paulo"))
@@ -208,10 +212,60 @@ def get_all_items():
     ]
     return jsonify(items)
 
+
 @app.route('/test_csv')
 def test_csv():
-    rows = get_valid_csv_data()
+    lista = request.args.get('lista', 'SAPPP')
+    rows = get_valid_csv_data(lista)
     return f"Total de linhas válidas: {len(rows)}"
+
+
+@app.route("/gerar_certificado", methods=["POST"])
+def gerar_certificado():
+    nome = request.form["nome"]
+    matricula = request.form["matricula"]
+    unidade = request.form["unidade"]
+    resultado = float(request.form["resultado"])
+    itens_n = request.form["itens_n"].split(',')
+
+    if resultado >= 95:
+        nivel = "OURO"
+    elif resultado >= 90:
+        nivel = "PRATA"
+    elif resultado >= 80:
+        nivel = "BRONZE"
+    else:
+        nivel = "NÃO CERTIFICADO"
+
+    # Criar PDF
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", "B", 16)
+
+    pdf.cell(0, 10, "CERTIFICADO DE AVALIAÇÃO", ln=True, align="C")
+    pdf.ln(10)
+    pdf.set_font("Arial", "", 12)
+
+    pdf.multi_cell(0, 10, f"""
+Certificamos que {nome}, matrícula {matricula}, da unidade {unidade}, concluiu a avaliação da lista de verificação com um resultado de {resultado:.2f}%.
+
+Classificação: {nivel}
+Data: {datetime.today().strftime('%d/%m/%Y')}
+    """.strip())
+
+    if itens_n and itens_n[0]:
+        pdf.ln(5)
+        pdf.set_font("Arial", "B", 12)
+        pdf.cell(0, 10, "Itens não conformes:", ln=True)
+        pdf.set_font("Arial", "", 11)
+        for item in itens_n:
+            pdf.multi_cell(0, 8, f"- {item.strip()}")
+
+    # Retorno do PDF
+    response = make_response(pdf.output(dest='S').encode('latin1'))
+    response.headers.set('Content-Disposition', 'attachment', filename='certificado_avaliacao.pdf')
+    response.headers.set('Content-Type', 'application/pdf')
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
